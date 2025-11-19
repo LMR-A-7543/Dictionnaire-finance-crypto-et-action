@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionnaire Crypto • Finance • Actions</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <!-- CANVAS ANIMÉ -->
+    <canvas id="canvas"></canvas>
+
+    <!-- MENU LATÉRAL -->
+    <div id="sidebar">
+        <h2>Dictionnaire</h2>
+        <input id="search" type="text" placeholder="Rechercher un terme...">
+
+        <ul id="wordList"></ul>
+    </div>
+
+    <!-- POPUP DÉFINITION -->
+    <div id="popup" class="hidden">
+        <div id="popup-content">
+            <span id="closePopup">×</span>
+            <img id="popup-img" src="" alt="">
+            <h3 id="popup-title"></h3>
+            <p id="popup-text"></p>
+        </div>
+    </div>
+
+    <script src="data/definitions.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/canvas.js"></script>
+</body>
+</html>
