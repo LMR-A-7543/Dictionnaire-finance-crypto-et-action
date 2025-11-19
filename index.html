@@ -6,20 +6,26 @@
     <title>Dictionnaire Crypto • Finance • Actions</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <!-- CANVAS ANIMÉ -->
+    <!-- Arrière-plan animé -->
     <canvas id="canvas"></canvas>
 
-    <!-- MENU LATÉRAL -->
-    <div id="sidebar">
+    <!-- Sidebar — Menu -->
+    <aside id="sidebar">
         <h2>Dictionnaire</h2>
-        <input id="search" type="text" placeholder="Rechercher un terme...">
 
+        <input id="search" type="text" placeholder="Rechercher un terme…">
+
+        <!-- Filtre alphabet -->
+        <div id="alphabet"></div>
+
+        <!-- Liste des mots -->
         <ul id="wordList"></ul>
-    </div>
+    </aside>
 
-    <!-- POPUP DÉFINITION -->
+    <!-- Popup des définitions -->
     <div id="popup" class="hidden">
         <div id="popup-content">
             <span id="closePopup">×</span>
@@ -32,5 +38,6 @@
     <script src="data/definitions.js"></script>
     <script src="js/app.js"></script>
     <script src="js/canvas.js"></script>
+
 </body>
 </html>
