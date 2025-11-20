@@ -1,50 +1,85 @@
 // =============================
-// Chargement des éléments HTML
+// ELEMENTS HTML
 // =============================
 const wordList = document.getElementById("wordList");
 const searchInput = document.getElementById("search");
 const alphabetBox = document.getElementById("alphabet");
+const categoriesBox = document.getElementById("categories");
 
 // =============================
-// Génération Alphabet dynamique
+// ALPHABET DYNAMIQUE
 // =============================
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 alphabet.forEach(letter => {
     const span = document.createElement("span");
     span.textContent = letter;
+    span.classList.add("alphabet-letter");
     span.onclick = () => filterByLetter(letter);
     alphabetBox.appendChild(span);
 });
 
 // =============================
-// Affichage des mots
+// CATEGORIES DYNAMIQUES
 // =============================
-function loadWords(list) {
+// Crée un set unique des catégories présentes dans definitions
+const categories = [...new Set(definitions.map(d => d.category))];
+
+categories.forEach(cat => {
+    const span = document.createElement("span");
+    span.textContent = cat;
+    span.classList.add("category-item");
+    span.onclick = () => filterByCategory(cat);
+    categoriesBox.appendChild(span);
+});
+
+// =============================
+// FONCTION LOAD WORDS
+// =============================
+function loadWords(list, highlight = "") {
     wordList.innerHTML = "";
+
+    if(list.length === 0){
+        wordList.innerHTML = "<li>Aucun résultat</li>";
+        return;
+    }
 
     list.forEach(def => {
         const li = document.createElement("li");
-        li.textContent = def.word;
         li.onclick = () => openPopup(def);
+
+        // Surbrillance du texte recherché
+        if(highlight) {
+            const regex = new RegExp(`(${highlight})`, "gi");
+            li.innerHTML = def.word.replace(regex, "<span class='highlight'>$1</span>");
+        } else {
+            li.textContent = def.word;
+        }
+
         wordList.appendChild(li);
     });
 }
 
-loadWords(definitions);
-
 // =============================
-// Filtre par lettre
+// FILTRE PAR LETTRE
 // =============================
 function filterByLetter(letter) {
-    const filtered = definitions.filter(d =>
+    const filtered = definitions.filter(d => 
         d.word.toUpperCase().startsWith(letter)
     );
     loadWords(filtered);
 }
 
 // =============================
-// Recherche dynamique
+// FILTRE PAR CATEGORIE
+// =============================
+function filterByCategory(category) {
+    const filtered = definitions.filter(d => d.category === category);
+    loadWords(filtered);
+}
+
+// =============================
+// RECHERCHE DYNAMIQUE
 // =============================
 searchInput.addEventListener("input", () => {
     const text = searchInput.value.toLowerCase();
@@ -53,19 +88,34 @@ searchInput.addEventListener("input", () => {
         d.word.toLowerCase().includes(text)
     );
 
-    loadWords(filtered);
+    loadWords(filtered, text);
 });
 
 // =============================
-// Popup Définition
+// POPUP DEFINITIONS
 // =============================
 function openPopup(def) {
+    const popup = document.getElementById("popup");
     document.getElementById("popup-title").textContent = def.word;
     document.getElementById("popup-text").textContent = def.definition;
-    document.getElementById("popup-img").src = def.image;
-    document.getElementById("popup").classList.remove("hidden");
+    const imgEl = document.getElementById("popup-img");
+
+    if(def.image) {
+        imgEl.src = def.image;
+        imgEl.style.display = "block";
+    } else {
+        imgEl.style.display = "none";
+    }
+
+    popup.classList.remove("hidden");
 }
 
+// Fermer le popup
 document.getElementById("closePopup").onclick = () => {
     document.getElementById("popup").classList.add("hidden");
 };
+
+// =============================
+// INIT
+// =============================
+loadWords(definitions);
