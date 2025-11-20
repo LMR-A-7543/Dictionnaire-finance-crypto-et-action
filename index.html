@@ -337,3 +337,61 @@ const definitions = [
 
 </body>
 </html>
+<div id="definitions-container"></div>
+<script>
+const container = document.getElementById("definitions-container");
+
+function displayDefinitions(list) {
+    container.innerHTML = ""; // vide le conteneur
+    list.forEach(def => {
+        const div = document.createElement("div");
+        div.className = "definition-card";
+        div.innerHTML = `
+            <h3>${def.word}</h3>
+            <p>${def.definition}</p>
+            <img src="${def.image}" alt="${def.word}" />
+        `;
+        container.appendChild(div);
+    });
+}
+
+// Affiche tout au début
+displayDefinitions(definitions);
+
+// Filtrage par catégorie
+const categoryButtons = document.querySelectorAll(".category-btn");
+categoryButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        const cat = btn.dataset.category;
+        if(cat === "all") {
+            displayDefinitions(definitions);
+        } else {
+            displayDefinitions(definitions.filter(d => d.category === cat));
+        }
+    });
+});
+
+// Filtrage par lettre
+const alphaButtons = document.querySelectorAll(".alpha-btn");
+alphaButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        const letter = btn.dataset.letter;
+        if(letter === "all") {
+            displayDefinitions(definitions);
+        } else {
+            displayDefinitions(definitions.filter(d => d.word[0].toUpperCase() === letter));
+        }
+    });
+});
+</script>
+.definition-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
+.definition-card img {
+    max-width: 100px;
+    display: block;
+}
+
