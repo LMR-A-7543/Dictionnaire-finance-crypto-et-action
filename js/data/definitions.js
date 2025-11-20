@@ -213,7 +213,6 @@ const definitions = [
   { word: "Swap", definition: "Échange entre deux actifs ou cryptos.", image: "img/placeholder.png" },
   { word: "Swing Trading", definition: "Stratégie moyen terme basée sur les mouvements du marché.", image: "img/placeholder.png" }
 
-
   { word: "Taker", definition: "Prend liquidité du marché.", image: "", category: "Bourse" },
   { word: "Token", definition: "Jeton numérique émis sur une blockchain.", image: "img/placeholder.png" },
   { word: "Tokenisation", definition: "Processus de conversion d’un actif en jeton numérique.", image: "img/placeholder.png" },
