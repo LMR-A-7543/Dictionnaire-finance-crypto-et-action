@@ -1,397 +1,125 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dictionnaire Crypto / Finance</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    #categories, #alphabet { margin-bottom: 20px; }
-    .category-btn, .alpha-btn { margin: 2px; padding: 5px 10px; cursor: pointer; }
-    .definition-card { border: 1px solid #ccc; padding: 10px; margin: 5px 0; display: flex; align-items: center; }
-    .definition-card img { width: 50px; height: 50px; margin-right: 10px; }
-    .definition-content { display: flex; flex-direction: column; }
-    .definition-word { font-weight: bold; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dictionnaire Crypto / Finance</title>
+<style>
+  body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+  }
+  #categories, #alphabet {
+      margin-bottom: 20px;
+  }
+  .category-btn, .alpha-btn {
+      margin: 3px;
+      padding: 5px 10px;
+      cursor: pointer;
+  }
+  .definition-card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      display: inline-block;
+      vertical-align: top;
+      width: 200px;
+  }
+  .definition-card img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-top: 5px;
+  }
+</style>
 </head>
 <body>
 
-  <div id="categories">
-    <button class="category-btn" data-category="all">Tout</button>
-    <button class="category-btn" data-category="finance">Finance</button>
-    <button class="category-btn" data-category="crypto">Crypto</button>
-    <button class="category-btn" data-category="bourse">Actions / Bourse</button>
-    <button class="category-btn" data-category="analyse">Analyse Technique</button>
-    <button class="category-btn" data-category="economie">Économie</button>
-  </div>
+<h1>Dictionnaire Crypto / Finance</h1>
 
-  <div id="alphabet">
-    <button class="alpha-btn" data-letter="all">A-Z</button>
-  </div>
+<!-- Menu Catégories -->
+<div id="categories">
+  <button class="category-btn" data-category="all">Tout</button>
+  <button class="category-btn" data-category="finance">Finance</button>
+  <button class="category-btn" data-category="crypto">Crypto</button>
+  <button class="category-btn" data-category="bourse">Actions / Bourse</button>
+  <button class="category-btn" data-category="analyse">Analyse Technique</button>
+  <button class="category-btn" data-category="economie">Économie</button>
+</div>
 
-  <div id="definitions-container"></div>
+<!-- Menu Alphabétique -->
+<div id="alphabet">
+  <button class="alpha-btn" data-letter="all">A-Z</button>
+</div>
 
-  <script>
-    const alphabetDiv = document.getElementById("alphabet");
-    for (let i = 65; i <= 90; i++) {
+<!-- Conteneur des définitions -->
+<div id="definitions-container"></div>
+
+<script>
+  // Génération dynamique des lettres A à Z
+  const alphabetDiv = document.getElementById("alphabet");
+  for (let i = 65; i <= 90; i++) {
       const letter = String.fromCharCode(i);
       alphabetDiv.innerHTML += `<button class="alpha-btn" data-letter="${letter}">${letter}</button>`;
-    }
+  }
 
-const definitions = [
-  { word: "Acte sous seing privé", definition: "Contrat signé entre parties sans intervention notariale.", image: "img/placeholder.png" },
-  { word: "Airdrop", definition: "Distribution gratuite de tokens.", image: "img/placeholder.png" },
-  { word: "Airdrop Farming", definition: "Exploitation de protocoles pour maximiser l’éligibilité aux airdrops.", image: "img/placeholder.png" },
-  { word: "Alligator Indicator", definition: "Indicateur basé sur trois moyennes mobiles.", image: "img/placeholder.png" },
-  { word: "Altcoin", definition: "Toutes les cryptos autres que Bitcoin.", image: "img/placeholder.png" },
-  { word: "AMM", definition: "Système de trading automatisé via pools (ex: Uniswap).", image: "img/placeholder.png" },
-  { word: "Anti-trust", definition: "Lois contre les pratiques anticoncurrentielles.", image: "img/placeholder.png" },
-  { word: "Anti-whale mechanism", definition: "Limitation pour éviter que de gros détenteurs manipulent le marché.", image: "img/placeholder.png" },
-  { word: "APY", definition: "Rendement annuel avec intérêts composés.", image: "img/placeholder.png" },
-  { word: "APR", definition: "Taux annuel sans intérêts composés.", image: "img/placeholder.png" },
-  { word: "Arbitrage", definition: "Profiter des différences de prix entre plateformes.", image: "img/placeholder.png" },
-  { word: "Arbitrage statistique", definition: "Profit basé sur des modèles mathématiques.", image: "img/placeholder.png" },
-  { word: "Arbitrage triangulaire", definition: "Arbitrage impliquant trois crypto ou devises pour tirer profit des écarts de prix.", image: "img/placeholder.png" },
-  { word: "Asset Allocation", definition: "Répartition des investissements entre différentes classes d’actifs.", image: "img/placeholder.png" },
-  { word: "Asymétrie d’information", definition: "Une partie détient plus d'informations que l'autre.", image: "img/placeholder.png" },
-  { word: "ATB", definition: "Plus bas prix historique.", image: "img/placeholder.png" },
-  { word: "ATH", definition: "Plus haut prix historique.", image: "img/placeholder.png" },
-  { word: "Atomic Swap", definition: "Échange direct entre deux crypto sans tiers.", image: "img/placeholder.png" },
+  // Tableau definitions 
+  const definitions = [
+      { word: "Acte sous seing privé", definition: "Contrat signé entre parties sans intervention notariale.", image: "img/placeholder.png", category: "finance" },
+      { word: "Airdrop", definition: "Distribution gratuite de tokens.", image: "img/placeholder.png", category: "crypto" },
+      { word: "Altcoin", definition: "Toutes les cryptos autres que Bitcoin.", image: "img/placeholder.png", category: "crypto" },
+      { word: "Neutralité fiscale", definition: "Fiscalité qui n’influence pas le choix économique.", image: "img/placeholder.png", category: "finance" },
+      { word: "Stagflation", definition: "Inflation + stagnation.", image: "img/placeholder.png", category: "economie" },
+      { word: "Stop-limit", definition: "Ordre conditionnel.", image: "img/placeholder.png", category: "bourse" }
+      // Ajoute ici toutes les autres définitions avec leur catégorie correspondante
+  ];
 
-  { word: "Backrun", definition: "Exploiter une transaction en attente pour tirer profit avant elle.", image: "img/placeholder.png" },
-  { word: "Backtesting", definition: "Test d’une stratégie sur données historiques.", image: "img/placeholder.png" },
-  { word: "Bail commercial", definition: "Contrat de location d’un local commercial.", image: "img/placeholder.png" },
-  { word: "Bear Market", definition: "Marché baissier prolongé.", image: "img/placeholder.png" },
-  { word: "Bear Trap", definition: "Faux signal de baisse.", image: "img/placeholder.png" },
-  { word: "Bid Price", definition: "Prix d’achat proposé.", image: "img/placeholder.png" },
-  { word: "Bid-ask spread", definition: "Écart entre prix d’achat et prix de vente.", image: "img/placeholder.png" },
-  { word: "Blue Chip Token", definition: "Crypto solide et établie.", image: "img/placeholder.png" },
-  { word: "Bond Yield", definition: "Rendement d’une obligation.", image: "img/placeholder.png" },
-  { word: "Book order", definition: "Carnet d’ordres d’un marché.", image: "img/placeholder.png" },
-  { word: "Bougie", definition: "Représentation graphique du prix (candlestick).", image: "img/placeholder.png" },
-  { word: "Breakout", definition: "Cassure d’un niveau important.", image: "img/placeholder.png" },
-  { word: "Bull Market", definition: "Marché haussier prolongé.", image: "img/placeholder.png" },
-  { word: "Bull Trap", definition: "Faux signal de hausse.", image: "img/placeholder.png" },
-  { word: "Burn", definition: "Destruction volontaire de tokens.", image: "img/placeholder.png" },
-  { word: "Burn address", definition: "Adresse où les tokens sont détruits.", image: "img/placeholder.png" },
-  { word: "Burning mechanism", definition: "Processus de destruction de tokens pour réduire l’offre.", image: "img/placeholder.png" },
+  const container = document.getElementById("definitions-container");
 
-  { word: "Candlestick Pattern", definition: "Figures de bougies (Doji, Marteau…).", image: "img/placeholder.png" },
-  { word: "Cessation d’actif", definition: "Vente d’un actif générant une plus-value ou moins-value.", image: "img/placeholder.png" },
-  { word: "Chainlink", definition: "Oracle décentralisé pour données externes.", image: "img/placeholder.png" },
-  { word: "Circulating Supply", definition: "Tokens en circulation.", image: "img/placeholder.png" },
-  { word: "Clause de réserve de propriété", definition: "Transfert de propriété différé.", image: "img/placeholder.png" },
-  { word: "Clause pénale", definition: "Sanction contractuelle prévue.", image: "img/placeholder.png" },
-  { word: "Cold storage", definition: "Stockage hors ligne sécurisé.", image: "img/placeholder.png" },
-  { word: "CDP", definition: "Position de dette collatéralisée (DeFi).", image: "img/placeholder.png" },
-  { word: "Commodity", definition: "Matière première.", image: "img/placeholder.png" },
-  { word: "Consortium blockchain", definition: "Blockchain gérée par un groupe d'entreprises.", image: "img/placeholder.png" },
-  { word: "Consensus Layer", definition: "Couche validant les blocs.", image: "img/placeholder.png" },
-  { word: "Contrat cadre", definition: "Accord général définissant des relations économiques.", image: "img/placeholder.png" },
-  { word: "Correction", definition: "Chute temporaire dans une tendance haussière.", image: "img/placeholder.png" },
-  { word: "Cross-chain", definition: "Interaction entre blockchains.", image: "img/placeholder.png" },
-  { word: "Cross-Chain Bridge", definition: "Pont entre deux blockchains.", image: "img/placeholder.png" },
-  { word: "Custodial Wallet", definition: "Wallet géré par un tiers.", image: "img/placeholder.png" },
-  { word: "Coût d’opportunité", definition: "Valeur du choix alternatif non retenu.", image: "img/placeholder.png" },
-  { word: "Coût marginal", definition: "Coût d'une unité supplémentaire.", image: "img/placeholder.png" },
-  { word: "Concurrence imparfaite", definition: "Marché où certains acteurs influencent le prix.", image: "img/placeholder.png" },
-  { word: "Compound", definition: "Protocole de prêt et emprunt crypto.", image: "img/placeholder.png" }
-
-  { word: "Dead Cat Bounce", definition: "Petit rebond temporaire dans un marché baissier.", image: "img/placeholder.png" },
-  { word: "Delta", definition: "Sensibilité du prix d’une option par rapport à l’actif sous-jacent.", image: "img/placeholder.png" },
-  { word: "Déflation", definition: "Baisse générale et durable des prix.", image: "img/placeholder.png" },
-  { word: "Dépréciation", definition: "Perte de valeur d'un actif dans le temps.", image: "img/placeholder.png" },
-  { word: "Deep Liquidity", definition: "Forte profondeur de marché avec volume important.", image: "img/placeholder.png" },
-  { word: "Dérivés crypto", definition: "Produits dérivés basés sur des crypto-actifs.", image: "img/placeholder.png" },
-  { word: "Dividende", definition: "Rémunération versée aux actionnaires.", image: "img/placeholder.png" },
-  { word: "Down", definition: "Mouvement baissier.", image: "img/placeholder.png" },
-  { word: "Downbad", definition: "Situation de forte perte ou échec.", image: "img/placeholder.png" },
-  { word: "Downtrend", definition: "Tendance baissière.", image: "img/placeholder.png" },
-  { word: "Drawdown maximal", definition: "Perte maximale enregistrée par un portefeuille.", image: "img/placeholder.png" },
-  { word: "Dust transaction", definition: "Très petite transaction souvent inutile à cause des frais.", image: "img/placeholder.png" },
-
-  { word: "EBITDA", definition: "Résultat avant intérêts, impôts, dépréciations et amortissements.", image: "img/placeholder.png" },
-  { word: "Effet de levier", definition: "Amplification des gains et pertes via l'endettement.", image: "img/placeholder.png" },
-  { word: "Effet de réseau", definition: "La valeur augmente quand le nombre d’utilisateurs augmente.", image: "img/placeholder.png" },
-  { word: "Elastic Supply Token", definition: "Token dont la supply s’ajuste automatiquement.", image: "img/placeholder.png" },
-  { word: "EVM", definition: "Machine virtuelle Ethereum.", image: "img/placeholder.png" },
-  { word: "Epoch", definition: "Période de validation ou d’émission de récompenses sur blockchain.", image: "img/placeholder.png" },
-  { word: "ETF Spot", definition: "ETF basé directement sur l’actif physique (ex : Bitcoin).", image: "img/placeholder.png" },
-  { word: "Exchange", definition: "Plateforme d’échange de crypto.", image: "img/placeholder.png" },
-  { word: "Exposition", definition: "Montant ou niveau d’investissement engagé.", image: "img/placeholder.png" },
-  { word: "Externalité négative", definition: "Impact négatif non pris en compte par le marché.", image: "img/placeholder.png" },
-  { word: "Externalité positive", definition: "Impact positif non rémunéré par le marché.", image: "img/placeholder.png" },
-
-  { word: "Faucet", definition: "Service distribuant gratuitement de petites quantités de crypto.", image: "img/placeholder.png" },
-  { word: "Fonds indiciel", definition: "Fonds qui suit un indice boursier.", image: "img/placeholder.png" },
-  { word: "Fonds propres", definition: "Capitaux appartenant aux actionnaires.", image: "img/placeholder.png" },
-  { word: "Fork", definition: "Séparation d’une blockchain en deux versions.", image: "img/placeholder.png" },
-  { word: "Fractional NFT", definition: "NFT divisé en parts.", image: "img/placeholder.png" },
-  { word: "FOMO", definition: "Fear of Missing Out : peur de rater une opportunité.", image: "img/placeholder.png" },
-  { word: "Fusion-acquisition", definition: "Regroupement ou rachat d’entreprises.", image: "img/placeholder.png" },
-  { word: "Farming", definition: "Blocage de crypto pour obtenir des récompenses.", image: "img/placeholder.png" },
-  { word: "Flash loan", definition: "Prêt instantané sans collatéral remboursé dans la même transaction.", image: "img/placeholder.png" },
-
-  { word: "Gas Fee", definition: "Frais de transaction sur blockchain.", image: "img/placeholder.png" },
-  { word: "Gas limit", definition: "Limite maximale de gaz allouée à une transaction.", image: "img/placeholder.png" },
-  { word: "Gas price", definition: "Prix payé par unité de gaz.", image: "img/placeholder.png" },
-  { word: "Génération de blocs", definition: "Création d’un nouveau bloc sur une blockchain.", image: "img/placeholder.png" },
-  { word: "Governance Token", definition: "Token permettant de voter dans un protocole.", image: "img/placeholder.png" },
-  { word: "Gouvernance interne", definition: "Organisation et règles internes d’une entreprise.", image: "img/placeholder.png" },
-  { word: "Greenfield investment", definition: "Création d’une nouvelle structure ou infrastructure à partir de zéro.", image: "img/placeholder.png" },
-
-  { word: "Halving", definition: "Division par deux des récompenses des mineurs.", image: "img/placeholder.png" },
-  { word: "Hedging", definition: "Stratégie de couverture contre le risque.", image: "img/placeholder.png" },
-  { word: "Hot wallet", definition: "Wallet connecté à Internet.", image: "img/placeholder.png" },
-  { word: "Hyperinflation", definition: "Inflation extrêmement élevée et rapide.", image: "img/placeholder.png" },
-
-  { word: "Indice sectoriel", definition: "Mesure de la performance d’un secteur boursier.", image: "img/placeholder.png" },
-  { word: "ICO", definition: "Initial Coin Offering : prévente de tokens.", image: "img/placeholder.png" },
-  { word: "Intégration verticale", definition: "Contrôle de plusieurs étapes de production.", image: "img/placeholder.png" },
-
-  { word: "Layer 0", definition: "Infrastructure sous-jacente supportant plusieurs blockchains.", image: "img/placeholder.png" },
-  { word: "Layer 1", definition: "Blockchain principale.", image: "img/placeholder.png" },
-  { word: "Layer 2", definition: "Solution d'échelle améliorant la vitesse et les coûts.", image: "img/placeholder.png" },
-  { word: "Layer 3", definition: "Couche applicative.", image: "img/placeholder.png" },
-  { word: "Liquidation forcée", definition: "Fermeture automatique d’une position par manque de marge.", image: "img/placeholder.png" },
-  { word: "Liquidité", definition: "Facilité de convertir un actif en cash.", image: "img/placeholder.png" },
-  { word: "Liquidity pool", definition: "Réserve de crypto utilisée par un DEX.", image: "img/placeholder.png" },
-  { word: "Loopring", definition: "Protocole Layer 2 Ethereum basé sur zkRollups.", image: "img/placeholder.png" },
-
-  { word: "Marge initiale", definition: "Montant requis pour ouvrir une position.", image: "img/placeholder.png" },
-  { word: "Market maker", definition: "Fournisseur de liquidité sur un marché.", image: "img/placeholder.png" },
-  { word: "MEV", definition: "Valeur extractible maximale par un validateur.", image: "img/placeholder.png" },
-  { word: "Mean reversion", definition: "Retour d’un prix vers sa moyenne historique.", image: "img/placeholder.png" },
-  { word: "Minting NFT", definition: "Création d’un NFT sur une blockchain.", image: "img/placeholder.png" },
-  { word: "Minting immobilier", definition: "Tokenisation d'actifs immobiliers.", image: "img/placeholder.png" },
-  { word: "Momentum trading", definition: "Stratégie suivant la force d'une tendance.", image: "img/placeholder.png" },
-  { word: "Multi-signature", definition: "Wallet nécessitant plusieurs signatures.", image: "img/placeholder.png" },
-  { word: "Moins-value", definition: "Perte réalisée lors d’une revente.", image: "img/placeholder.png" }
-
-   { word: "Négociation algorithmique", definition: "Trading automatisé via algorithmes.", image: "img/placeholder.png" },
-  { word: "Néobroker", definition: "Plateforme de courtage moderne à faibles frais.", image: "img/placeholder.png" },
-  { word: "Neutralité fiscale", definition: "Fiscalité qui n’influence pas le choix économique.", image: "img/placeholder.png" },
-  { word: "NFT", definition: "Token non fongible représentant un actif unique.", image: "img/placeholder.png" },
-  { word: "Nœud", definition: "Ordinateur participant au réseau blockchain.", image: "img/placeholder.png" },
-  { word: "Normalisation financière", definition: "Création de règles standardisées pour les marchés.", image: "img/placeholder.png" },
-
-  { word: "Offre totale", definition: "Quantité totale de tokens existants.", image: "img/placeholder.png" },
-  { word: "Offre en circulation", definition: "Quantité de tokens actuellement accessibles.", image: "img/placeholder.png" },
-  { word: "On-chain", definition: "Données inscrites directement sur la blockchain.", image: "img/placeholder.png" },
-  { word: "On-chain metrics", definition: "Données analytiques récupérées directement sur la blockchain.", image: "img/placeholder.png" },
-  { word: "Open Interest", definition: "Total des contrats dérivés encore ouverts sur un marché.", image: "img/placeholder.png" },
-  { word: "Option d’achat (Call)", definition: "Contrat permettant d’acheter un actif à un prix fixé.", image: "img/placeholder.png" },
-  { word: "Option de vente (Put)", definition: "Contrat permettant de vendre un actif à un prix fixé.", image: "img/placeholder.png" },
-  { word: "Oracle décentralisé", definition: "Système fournissant des données externes fiables à une blockchain.", image: "img/placeholder.png" },
-  { word: "Ordre à cours limité", definition: "Ordre exécuté seulement à un prix donné.", image: "img/placeholder.png" },
-  { word: "Ordre au marché", definition: "Ordre exécuté immédiatement au meilleur prix dispo.", image: "img/placeholder.png" },
-  { word: "Ordre stop-loss", definition: "Ordre visant à limiter les pertes.", image: "img/placeholder.png" },
-  { word: "Ordre OCO", definition: "Deux ordres où l’un annule l’autre.", image: "img/placeholder.png" },
-
-  { word: "PAI", definition: "Produit d’épargne réglementé offrant un intérêt annuel.", image: "img/placeholder.png" },
-  { word: "Paire de trading", definition: "Couple d’actifs permettant un échange.", image: "img/placeholder.png" },
-  { word: "Parachain", definition: "Blockchain indépendante connectée via une relay chain.", image: "img/placeholder.png" },
-  { word: "Passif", definition: "Dettes et obligations d’une entreprise.", image: "img/placeholder.png" },
-  { word: "PE Ratio", definition: "Indicateur valorisant une entreprise par ses bénéfices.", image: "img/placeholder.png" },
-  { word: "Perpétuels (Perps)", definition: "Contrats à terme sans date d’expiration.", image: "img/placeholder.png" },
-  { word: "Période de lock-up", definition: "Interdiction temporaire de vendre des actions.", image: "img/placeholder.png" },
-  { word: "PIB", definition: "Richesse totale produite dans un pays.", image: "img/placeholder.png" },
-  { word: "PIP", definition: "Unité minimale de variation d'un prix.", image: "img/placeholder.png" },
-  { word: "Plus-value", definition: "Gain lors d’une revente.", image: "", category: "Finance" },
-  { word: "PoW", definition: "Proof of Work : validation via calcul.", image: "img/placeholder.png" },
-  { word: "PoS", definition: "Proof of Stake : validation via staking.", image: "img/placeholder.png" },
-  { word: "Pool de staking", definition: "Regroupement d'utilisateurs pour valider des blocs.", image: "img/placeholder.png" },
-  { word: "Portefeuille", definition: "Outil de stockage de crypto.", image: "img/placeholder.png" },
-  { word: "Pre-mine", definition: "Création d’une partie de la supply avant le lancement officiel.", image: "img/placeholder.png" },
-  { word: "Prime de risque", definition: "Rémunération additionnelle exigée par un investisseur.", image: "img/placeholder.png" },
-  { word: "Prix plancher (Floor Price)", definition: "Prix minimal d’achat d’un NFT.", image: "img/placeholder.png" },
-  { word: "Provisionnement", definition: "Réserve comptable destinée à couvrir une charge future probable.", image: "img/placeholder.png" },
-  { word: "Pump", definition: "Forte hausse soudaine du prix.", image: "img/placeholder.png" },
-  { word: "Pump & Dump", definition: "Manipulation consistant à gonfler puis vendre un actif.", image: "img/placeholder.png" },
-
-  { word: "Quantitative Easing", definition: "Injection de liquidités par une banque centrale.", image: "img/placeholder.png" },
-  { word: "Quantitative Tightening", definition: "Retrait de liquidités par une banque centrale.", image: "img/placeholder.png" },
-  { word: "Quick Ratio", definition: "Mesure la capacité à couvrir les dettes court terme.", image: "img/placeholder.png" },
-
-  { word: "Rallye haussier", definition: "Montée rapide et soutenue d’un actif.", image: "img/placeholder.png" },
-  { word: "Rareté numérique", definition: "Carence volontaire de tokens pour augmenter leur valeur.", image: "img/placeholder.png" },
-  { word: "Rationnement du crédit", definition: "Limitation volontaire de l’octroi de crédit par les banques.", image: "img/placeholder.png" },
-  { word: "RCM", definition: "Régime de cotisation minimum appliqué à certaines activités.", image: "img/placeholder.png" },
-  { word: "Rebalance", definition: "Réajustement d’un portefeuille.", image: "img/placeholder.png" },
-  { word: "Récession", definition: "Baisse durable de l’activité économique.", image: "img/placeholder.png" },
-  { word: "Relay Chain", definition: "Chaîne centrale reliant plusieurs parachains entre elles.", image: "img/placeholder.png" },
-  { word: "Rendement", definition: "Bénéfice généré par un investissement.", image: "img/placeholder.png" },
-  { word: "Résistance", definition: "Prix où une hausse est susceptible d'être bloquée.", image: "img/placeholder.png" },
-  { word: "Retraçement", definition: "Correction temporaire dans une tendance.", image: "img/placeholder.png" },
-  { word: "Retraitement comptable", definition: "Ajustement des données comptables pour les rendre comparables.", image: "img/placeholder.png" },
-  { word: "Risques systémiques", definition: "Risques menaçant l’ensemble du système financier.", image: "img/placeholder.png" },
-  { word: "ROI", definition: "Retour sur investissement.", image: "img/placeholder.png" },
-  { word: "RSI", definition: "Indicateur mesurant la force d’une tendance.", image: "img/placeholder.png" },
-  { word: "Rug Pull", definition: "Projet crypto qui disparaît après avoir récolté des fonds.", image: "img/placeholder.png" },
-
-  { word: "Scalping", definition: "Stratégie de trading ultra court terme.", image: "img/placeholder.png" },
-  { word: "Sécurité financière", definition: "Capacité à couvrir ses besoins sans risque.", image: "img/placeholder.png" },
-  { word: "Sécurité informatique", definition: "Protection des données et systèmes.", image: "img/placeholder.png" },
-  { word: "SegWit", definition: "Séparation de la signature dans les transactions Bitcoin.", image: "img/placeholder.png" },
-  { word: "Sell Wall", definition: "Grosse quantité de vente empêchant le prix de monter.", image: "img/placeholder.png" },
-  { word: "Short", definition: "Parier sur la baisse d’un actif.", image: "img/placeholder.png" },
-  { word: "Sidechain", definition: "Blockchain secondaire connectée à une blockchain principale.", image: "img/placeholder.png" }
-  { word: "Slippage", definition: "Écart entre le prix estimé et le prix réellement exécuté.", image: "img/placeholder.png" },
-  { word: "Smart Contract", definition: "Contrat autonome exécuté sur une blockchain.", image: "img/placeholder.png" },
-  { word: "Smart contract immuable", definition: "Contrat intelligent qui ne peut pas être modifié après déploiement.", image: "img/placeholder.png" },
-  { word: "Soft Cap", definition: "Objectif minimal de levée de fonds.", image: "", category: "Crypto" },
-  { word: "Solde net", definition: "Différence entre flux entrants et sortants.", image: "img/placeholder.png" },
-  { word: "Solvabilité", definition: "Capacité d'une entreprise à payer ses dettes.", image: "img/placeholder.png" },
-  { word: "Spot", definition: "Marché au comptant.", image: "", category: "Finance" },
-  { word: "Spread", definition: "Écart entre prix d’achat et prix de vente.", image: "img/placeholder.png" },
-  { word: "Stablecoin", definition: "Crypto à valeur stable.", image: "", category: "Crypto" },
-  { word: "Stagflation", definition: "Inflation élevée combinée à une faible croissance (stagnation) .", image: "img/placeholder.png" },
-  { word: "Staking", definition: "Blocage de crypto pour obtenir des récompenses.", image: "img/placeholder.png" },
-  { word: "Stop-limit", definition: "Ordre activé à un prix déterminé puis exécuté au prix limite.", image: "img/placeholder.png" },
-  { word: "Supply", definition: "Offre totale d’un token.", image: "", category: "Crypto" },
-  { word: "Support", definition: "Prix où une baisse risque d’être stoppée.", image: "img/placeholder.png" },
-  { word: "Swap", definition: "Échange entre deux actifs ou cryptos.", image: "img/placeholder.png" },
-  { word: "Swing Trading", definition: "Stratégie moyen terme basée sur les mouvements du marché.", image: "img/placeholder.png" }
-
-  { word: "Taker", definition: "Prend liquidité du marché.", image: "", category: "Bourse" },
-  { word: "Token", definition: "Jeton numérique émis sur une blockchain.", image: "img/placeholder.png" },
-  { word: "Tokenisation", definition: "Processus de conversion d’un actif en jeton numérique.", image: "img/placeholder.png" },
-  { word: "Tokenomics", definition: "Économie autour d’un token.", image: "", category: "Crypto" },
-  { word: "Token vesting", definition: "Déblocage progressif de tokens sur une période définie.", image: "img/placeholder.png" },
-  { word: "Total Value Locked", definition: "Valeur totale bloquée dans protocole DeFi.", image: "", category: "Crypto" },
-  { word: "Transaction fee", definition: "Frais de transaction.", image: "", category: "Crypto" },
-  { word: "Treasury", definition: "Réserves d’un protocole.", image: "", category: "Crypto" },
-  { word: "Trésorerie nette", definition: "Différence entre liquidités et dettes financières à court terme.", image: "img/placeholder.png" },
- 
-  { word: "Uniswap", definition: "DEX populaire sur Ethereum.", image: "", category: "Crypto" },
-  { word: "Up", definition: "Mouvement haussier du prix.", image: "img/placeholder.png" },
-  { word: "Uptrend", definition: "Tendance haussière prolongée.", image: "img/placeholder.png" },
-  { word: "Utility Token", definition: "Token donnant accès à un service.", image: "", category: "Crypto" },
-
-  { word: "Valuation", definition: "Évaluation d’un actif.", image: "", category: "Finance" },
-  { word: "Vesting", definition: "Blocage progressif de tokens.", image: "", category: "Crypto" },
-  { word: "Volatilité implicite", definition: "Volatilité future anticipée dérivée du prix des options.", image: "img/placeholder.png" },
- 
-  { word: "Whale", definition: "Gros détenteur pouvant influencer le marché.", image: "", category: "Crypto" },
-  { word: "Wallet non-dépositaire", definition: "Portefeuille crypto où l'utilisateur contrôle entièrement ses clés privées.", image: "img/placeholder.png" },
-  { word: "Whitepaper", definition: "Document technique décrivant un projet blockchain ou crypto.", image: "img/placeholder.png" },
-
-  { word: "Yield Farming", definition: "Optimisation de rendement sur DeFi.", image: "", category: "Crypto" },
-
-  { word: "Zero-coupon bond", definition: "Obligation sans intérêts, vendue à prix réduit.", image: "", category: "Finance" }
-  { word: "ZK", definition: "Preuves cryptographiques Zero-Knowledge permettant de vérifier une information sans la révéler.", image: "img/placeholder.png" }
-];
-
-  
-    const definitionsContainer = document.getElementById("definitions-container");
-
-    let currentCategory = "all";
-    let currentLetter = "all";
-
-    function displayDefinitions() {
-      definitionsContainer.innerHTML = "";
-      const filtered = definitions.filter(def => {
-        const byCategory = currentCategory === "all" || def.category === currentCategory;
-        const byLetter = currentLetter === "all" || def.word[0].toUpperCase() === currentLetter;
-        return byCategory && byLetter;
+  function displayDefinitions(list) {
+      container.innerHTML = "";
+      list.forEach(def => {
+          const div = document.createElement("div");
+          div.className = "definition-card";
+          div.innerHTML = `
+              <h3>${def.word}</h3>
+              <p>${def.definition}</p>
+              <img src="${def.image}" alt="${def.word}" />
+          `;
+          container.appendChild(div);
       });
+  }
 
-      if (filtered.length === 0) {
-        definitionsContainer.innerHTML = "<p>Aucune définition trouvée.</p>";
-        return;
-      }
+  // Affichage initial
+  displayDefinitions(definitions);
 
-      filtered.forEach(def => {
-        const card = document.createElement("div");
-        card.className = "definition-card";
-        card.innerHTML = `
-          <img src="${def.image}" alt="${def.word}">
-          <div class="definition-content">
-            <span class="definition-word">${def.word}</span>
-            <span class="definition-text">${def.definition}</span>
-          </div>
-        `;
-        definitionsContainer.appendChild(card);
-      });
-    }
-
-    // Événements catégories
-    document.querySelectorAll(".category-btn").forEach(btn => {
+  // Filtrage par catégorie
+  const categoryButtons = document.querySelectorAll(".category-btn");
+  categoryButtons.forEach(btn => {
       btn.addEventListener("click", () => {
-        currentCategory = btn.dataset.category;
-        displayDefinitions();
+          const cat = btn.dataset.category;
+          if(cat === "all") {
+              displayDefinitions(definitions);
+          } else {
+              displayDefinitions(definitions.filter(d => d.category === cat));
+          }
       });
-    });
+  });
 
-    // Événements alphabet
-    document.querySelectorAll(".alpha-btn").forEach(btn => {
+  // Filtrage par lettre
+  const alphaButtons = document.querySelectorAll(".alpha-btn");
+  alphaButtons.forEach(btn => {
       btn.addEventListener("click", () => {
-        currentLetter = btn.dataset.letter;
-        displayDefinitions();
+          const letter = btn.dataset.letter;
+          if(letter === "all") {
+              displayDefinitions(definitions);
+          } else {
+              displayDefinitions(definitions.filter(d => d.word[0].toUpperCase() === letter));
+          }
       });
-    });
-
-    // Affichage initial
-    displayDefinitions();
-  </script>
+  });
+</script>
 
 </body>
 </html>
-<div id="definitions-container"></div>
-<script>
-const container = document.getElementById("definitions-container");
-
-function displayDefinitions(list) {
-    container.innerHTML = ""; // vide le conteneur
-    list.forEach(def => {
-        const div = document.createElement("div");
-        div.className = "definition-card";
-        div.innerHTML = `
-            <h3>${def.word}</h3>
-            <p>${def.definition}</p>
-            <img src="${def.image}" alt="${def.word}" />
-        `;
-        container.appendChild(div);
-    });
-}
-
-// Affiche tout au début
-displayDefinitions(definitions);
-
-// Filtrage par catégorie
-const categoryButtons = document.querySelectorAll(".category-btn");
-categoryButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        const cat = btn.dataset.category;
-        if(cat === "all") {
-            displayDefinitions(definitions);
-        } else {
-            displayDefinitions(definitions.filter(d => d.category === cat));
-        }
-    });
-});
-
-// Filtrage par lettre
-const alphaButtons = document.querySelectorAll(".alpha-btn");
-alphaButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        const letter = btn.dataset.letter;
-        if(letter === "all") {
-            displayDefinitions(definitions);
-        } else {
-            displayDefinitions(definitions.filter(d => d.word[0].toUpperCase() === letter));
-        }
-    });
-});
-</script>
-.definition-card {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 5px;
-}
-.definition-card img {
-    max-width: 100px;
-    display: block;
-}
-
