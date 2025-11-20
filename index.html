@@ -1,23 +1,96 @@
-<!-- Menu Catégories -->
-<div id="categories">
-  <button class="category-btn" data-category="all">Tout</button>
-  <button class="category-btn" data-category="finance">Finance</button>
-  <button class="category-btn" data-category="crypto">Crypto</button>
-  <button class="category-btn" data-category="bourse">Actions / Bourse</button>
-  <button class="category-btn" data-category="analyse">Analyse Technique</button>
-  <button class="category-btn" data-category="economie">Économie</button>
-</div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dictionnaire Crypto / Finance</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #categories, #alphabet { margin-bottom: 20px; }
+    .category-btn, .alpha-btn { margin: 2px; padding: 5px 10px; cursor: pointer; }
+    .definition-card { border: 1px solid #ccc; padding: 10px; margin: 5px 0; display: flex; align-items: center; }
+    .definition-card img { width: 50px; height: 50px; margin-right: 10px; }
+    .definition-content { display: flex; flex-direction: column; }
+    .definition-word { font-weight: bold; }
+  </style>
+</head>
+<body>
 
-<!-- Menu Alphabétique -->
-<div id="alphabet">
-  <button class="alpha-btn" data-letter="all">A-Z</button>
-</div>
+  <div id="categories">
+    <button class="category-btn" data-category="all">Tout</button>
+    <button class="category-btn" data-category="finance">Finance</button>
+    <button class="category-btn" data-category="crypto">Crypto</button>
+    <button class="category-btn" data-category="bourse">Actions / Bourse</button>
+    <button class="category-btn" data-category="analyse">Analyse Technique</button>
+    <button class="category-btn" data-category="economie">Économie</button>
+  </div>
 
-<script>
-  // Génération dynamique des lettres A à Z
-  const alphabetDiv = document.getElementById("alphabet");
-  for (let i = 65; i <= 90; i++) {
-    const letter = String.fromCharCode(i);
-    alphabetDiv.innerHTML += `<button class="alpha-btn" data-letter="${letter}">${letter}</button>`;
-  }
-</script>
+  <div id="alphabet">
+    <button class="alpha-btn" data-letter="all">A-Z</button>
+  </div>
+
+  <div id="definitions-container"></div>
+
+  <script>
+    const alphabetDiv = document.getElementById("alphabet");
+    for (let i = 65; i <= 90; i++) {
+      const letter = String.fromCharCode(i);
+      alphabetDiv.innerHTML += `<button class="alpha-btn" data-letter="${letter}">${letter}</button>`;
+    }
+
+    tyyyyyiiyyiy
+
+    const definitionsContainer = document.getElementById("definitions-container");
+
+    let currentCategory = "all";
+    let currentLetter = "all";
+
+    function displayDefinitions() {
+      definitionsContainer.innerHTML = "";
+      const filtered = definitions.filter(def => {
+        const byCategory = currentCategory === "all" || def.category === currentCategory;
+        const byLetter = currentLetter === "all" || def.word[0].toUpperCase() === currentLetter;
+        return byCategory && byLetter;
+      });
+
+      if (filtered.length === 0) {
+        definitionsContainer.innerHTML = "<p>Aucune définition trouvée.</p>";
+        return;
+      }
+
+      filtered.forEach(def => {
+        const card = document.createElement("div");
+        card.className = "definition-card";
+        card.innerHTML = `
+          <img src="${def.image}" alt="${def.word}">
+          <div class="definition-content">
+            <span class="definition-word">${def.word}</span>
+            <span class="definition-text">${def.definition}</span>
+          </div>
+        `;
+        definitionsContainer.appendChild(card);
+      });
+    }
+
+    // Événements catégories
+    document.querySelectorAll(".category-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentCategory = btn.dataset.category;
+        displayDefinitions();
+      });
+    });
+
+    // Événements alphabet
+    document.querySelectorAll(".alpha-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentLetter = btn.dataset.letter;
+        displayDefinitions();
+      });
+    });
+
+    // Affichage initial
+    displayDefinitions();
+  </script>
+
+</body>
+</html>
