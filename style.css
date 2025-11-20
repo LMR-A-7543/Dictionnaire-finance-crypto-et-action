@@ -139,3 +139,31 @@ body {
     font-size: 28px;
     cursor: pointer;
 }
+#categories, #alphabet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+  justify-content: center;
+}
+
+.category-btn, .alpha-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #ffffff20;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 14px;
+}
+
+.category-btn:hover,
+.alpha-btn:hover {
+  background: #ffffff40;
+}
+
+.category-btn.active,
+.alpha-btn.active {
+  background: #007bff;
+}
