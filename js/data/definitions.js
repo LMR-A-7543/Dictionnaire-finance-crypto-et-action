@@ -1,27 +1,27 @@
 const definitions = [
-  { word: "Acte sous seing privé", definition: "Contrat signé entre parties sans intervention notariale.", image: "img/placeholder.png" },
-  { word: "Airdrop", definition: "Distribution gratuite de tokens.", image: "img/placeholder.png" },
-  { word: "Airdrop Farming", definition: "Exploitation de protocoles pour maximiser l’éligibilité aux airdrops.", image: "img/placeholder.png" },
-  { word: "Alligator Indicator", definition: "Indicateur basé sur trois moyennes mobiles.", image: "img/placeholder.png" },
-  { word: "Altcoin", definition: "Toutes les cryptos autres que Bitcoin.", image: "img/placeholder.png" },
-  { word: "AMM", definition: "Système de trading automatisé via pools (ex: Uniswap).", image: "img/placeholder.png" },
-  { word: "Anti-trust", definition: "Lois contre les pratiques anticoncurrentielles.", image: "img/placeholder.png" },
-  { word: "Anti-whale mechanism", definition: "Limitation pour éviter que de gros détenteurs manipulent le marché.", image: "img/placeholder.png" },
-  { word: "APY", definition: "Rendement annuel avec intérêts composés.", image: "img/placeholder.png" },
-  { word: "APR", definition: "Taux annuel sans intérêts composés.", image: "img/placeholder.png" },
-  { word: "Arbitrage", definition: "Profiter des différences de prix entre plateformes.", image: "img/placeholder.png" },
-  { word: "Arbitrage statistique", definition: "Profit basé sur des modèles mathématiques.", image: "img/placeholder.png" },
-  { word: "Arbitrage triangulaire", definition: "Arbitrage impliquant trois crypto ou devises pour tirer profit des écarts de prix.", image: "img/placeholder.png" },
-  { word: "Asset Allocation", definition: "Répartition des investissements entre différentes classes d’actifs.", image: "img/placeholder.png" },
-  { word: "Asymétrie d’information", definition: "Une partie détient plus d'informations que l'autre.", image: "img/placeholder.png" },
-  { word: "ATB", definition: "Plus bas prix historique.", image: "img/placeholder.png" },
-  { word: "ATH", definition: "Plus haut prix historique.", image: "img/placeholder.png" },
-  { word: "Atomic Swap", definition: "Échange direct entre deux crypto sans tiers.", image: "img/placeholder.png" },
+  { word: "Acte sous seing privé", definition: "Contrat signé entre parties sans intervention notariale.", image: "img/placeholder.png", category: "crypto" }
+  { word: "Airdrop", definition: "Distribution gratuite de tokens.", image: "img/placeholder.png", category: "crypto" },
+  { word: "Airdrop Farming", definition: "Exploitation de protocoles pour maximiser l’éligibilité aux airdrops.", image: "img/placeholder.png", category: "crypto" }
+  { word: "Alligator Indicator", definition: "Indicateur basé sur trois moyennes mobiles.", image: "img/placeholder.png", category: "crypto" }
+  { word: "Altcoin", definition: "Toutes les cryptos autres que Bitcoin.", image: "img/placeholder.png", category: "crypto" }
+  { word: "AMM", definition: "Système de trading automatisé via pools (ex: Uniswap).", image: "img/placeholder.png", category: "crypto" },
+  { word: "Anti-trust", definition: "Lois contre les pratiques anticoncurrentielles.", image: "img/placeholder.png" },5f
+  { word: "Anti-whale mechanism", definition: "Limitation pour éviter que de gros détenteurs manipulent le marché.", image: "img/placeholder.png" },5f
+  { word: "APY", definition: "Rendement annuel avec intérêts composés.", image: "img/placeholder.png" },5
+  { word: "APR", definition: "Taux annuel sans intérêts composés.", image: "img/placeholder.png" },5
+  { word: "Arbitrage", definition: "Profiter des différences de prix entre plateformes.", image: "img/placeholder.png", category: "crypto" }5
+  { word: "Arbitrage statistique", definition: "Profit basé sur des modèles mathématiques.", image: "img/placeholder.png" },4eco
+  { word: "Arbitrage triangulaire", definition: "Arbitrage impliquant trois crypto ou devises pour tirer profit des écarts de prix.", image: "img/placeholder.png", category: "crypto" }
+  { word: "Asset Allocation", definition: "Répartition des investissements entre différentes classes d’actifs.", image: "img/placeholder.png" },5
+  { word: "Asymétrie d’information", definition: "Une partie détient plus d'informations que l'autre.", image: "img/placeholder.png" },5
+  { word: "ATB", definition: "Plus bas prix historique.", image: "img/placeholder.png" },5
+  { word: "ATH", definition: "Plus haut prix historique.", image: "img/placeholder.png" },5
+  { word: "Atomic Swap", definition: "Échange direct entre deux crypto sans tiers.", image: "img/placeholder.png", category: "crypto" }
 
-  { word: "Backrun", definition: "Exploiter une transaction en attente pour tirer profit avant elle.", image: "img/placeholder.png" },
-  { word: "Backtesting", definition: "Test d’une stratégie sur données historiques.", image: "img/placeholder.png" },
-  { word: "Bail commercial", definition: "Contrat de location d’un local commercial.", image: "img/placeholder.png" },
-  { word: "Bear Market", definition: "Marché baissier prolongé.", image: "img/placeholder.png" },
+  { word: "Backrun", definition: "Exploiter une transaction en attente pour tirer profit avant elle.", image: "img/placeholder.png" },f
+  { word: "Backtesting", definition: "Test d’une stratégie sur données historiques.", image: "img/placeholder.png" },f
+  { word: "Bail commercial", definition: "Contrat de location d’un local commercial.", image: "img/placeholder.png" },e
+  { word: "Bear Market", definition: "Marché baissier prolongé.", image: "img/placeholder.png" },f
   { word: "Bear Trap", definition: "Faux signal de baisse.", image: "img/placeholder.png" },
   { word: "Bid Price", definition: "Prix d’achat proposé.", image: "img/placeholder.png" },
   { word: "Bid-ask spread", definition: "Écart entre prix d’achat et prix de vente.", image: "img/placeholder.png" },
