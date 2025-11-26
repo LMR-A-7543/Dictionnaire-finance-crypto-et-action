@@ -3,45 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glossaire Glassmorphism</title>
+    <title>Dictionnaire Crypto / Finance</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- Canvas pour les bulles -->
+    <!-- Canvas pour effets visuels -->
     <canvas id="canvas"></canvas>
 
     <!-- Sidebar -->
     <div id="sidebar">
-        <h2>Glossaire</h2>
-
+        <h2>Dictionnaire</h2>
+        
         <!-- Barre de recherche -->
         <input type="text" id="search" placeholder="Rechercher un mot...">
 
-        <!-- Alphabet pour filtrer par lettre -->
+        <!-- Alphabet -->
         <div id="alphabet"></div>
 
         <!-- Catégories -->
-        <div id="categories">
-            <button class="category-btn" data-category="all">Toutes</button>
-        </div>
+        <div id="categories"></div>
 
         <!-- Liste des mots -->
         <ul id="wordList"></ul>
     </div>
 
-    <!-- Popup -->
+    <!-- Popup définition -->
     <div id="popup" class="hidden">
         <div id="popup-content">
             <span id="closePopup">&times;</span>
-            <img id="popup-img" src="" alt="Image">
+            <img id="popup-img" src="" alt="Image mot">
             <h3 id="popup-word"></h3>
             <p id="popup-definition"></p>
         </div>
     </div>
 
-    <!-- JS -->
+    <!-- Définition des mots -->
     <script src="definitions.js"></script>
+    <!-- Script principal -->
     <script src="main.js"></script>
 
 </body>
