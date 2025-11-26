@@ -1,6 +1,6 @@
 // main.js
 
-// Sélection des éléments HTML
+// --- Sélection des éléments HTML ---
 const wordListEl = document.getElementById("wordList");
 const searchInput = document.getElementById("search");
 const alphabetEl = document.getElementById("alphabet");
@@ -11,8 +11,9 @@ const popupImg = document.getElementById("popup-img");
 const popupWord = document.getElementById("popup-word");
 const popupDefinition = document.getElementById("popup-definition");
 const closePopupBtn = document.getElementById("closePopup");
+const uploadInput = document.getElementById("uploadFile");
 
-// Variables pour filtrage
+// --- Variables ---
 let filteredDefinitions = [...definitions];
 let activeLetter = "";
 let activeCategory = "";
@@ -68,26 +69,29 @@ alphabet.forEach(letter => {
 });
 
 // --- Catégories ---
-const categoriesSet = new Set();
-definitions.forEach(item => {
-    item.category.split(",").forEach(cat => categoriesSet.add(cat.trim()));
-});
-
-Array.from(categoriesSet).sort().forEach(cat => {
-    const btn = document.createElement("button");
-    btn.textContent = cat;
-    btn.classList.add("category-btn");
-    btn.addEventListener("click", () => {
-        if(activeCategory === cat){
-            activeCategory = "";
-        } else {
-            activeCategory = cat;
-        }
-        updateActiveClasses();
-        filterWords();
+function generateCategories() {
+    categoriesEl.innerHTML = "";
+    const categoriesSet = new Set();
+    definitions.forEach(item => {
+        item.category.split(",").forEach(cat => categoriesSet.add(cat.trim()));
     });
-    categoriesEl.appendChild(btn);
-});
+    Array.from(categoriesSet).sort().forEach(cat => {
+        const btn = document.createElement("button");
+        btn.textContent = cat;
+        btn.classList.add("category-btn");
+        btn.addEventListener("click", () => {
+            if(activeCategory === cat){
+                activeCategory = "";
+            } else {
+                activeCategory = cat;
+            }
+            updateActiveClasses();
+            filterWords();
+        });
+        categoriesEl.appendChild(btn);
+    });
+}
+generateCategories();
 
 // --- Mise à jour des classes actives ---
 function updateActiveClasses() {
@@ -111,6 +115,32 @@ function filterWords() {
         return matchesSearch && matchesLetter && matchesCategory;
     });
     displayWords(filteredDefinitions);
+}
+
+// --- Upload JSON ---
+if(uploadInput){
+    uploadInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const newDefs = JSON.parse(e.target.result);
+                if (Array.isArray(newDefs)) {
+                    definitions.push(...newDefs);
+                    generateCategories(); // mettre à jour les catégories
+                    filterWords();        // mettre à jour la liste affichée
+                    alert("Définitions importées avec succès !");
+                } else {
+                    alert("Le fichier doit contenir un tableau JSON de définitions.");
+                }
+            } catch (err) {
+                alert("Erreur lors de la lecture du fichier : " + err.message);
+            }
+        };
+        reader.readAsText(file);
+    });
 }
 
 // --- Initialisation ---
