@@ -1,215 +1,92 @@
-// =============================
-// ELEMENTS HTML
-// =============================
-const wordList = document.getElementById("wordList");
-const searchInput = document.getElementById("search");
-const alphabetBox = document.getElementById("alphabet");
-const categoriesBox = document.getElementById("categories");
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+// ============================
+// MAIN.JS
+// ============================
 
-// =============================
-// VARIABLES GLOBALES
-// =============================
-let filteredDefinitions = [...definitions]; // Définitions filtrées dynamiquement
-let bubbles = [];
+const wordListEl = document.getElementById("wordList");
+const searchEl = document.getElementById("search");
+const alphabetEl = document.getElementById("alphabet");
+const categoriesEl = document.getElementById("categories");
+const popupEl = document.getElementById("popup");
+const popupContentEl = document.getElementById("popup-content");
+const popupImgEl = document.getElementById("popup-img");
+const closePopupEl = document.getElementById("closePopup");
 
-// =============================
-// CANVAS SETUP
-// =============================
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-window.onresize = () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-};
-
-// =============================
-// GENERATION ALPHABET
-// =============================
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-alphabet.forEach(letter => {
-    const span = document.createElement("span");
-    span.textContent = letter;
-    span.classList.add("alphabet-letter");
-    span.onclick = () => {
-        filterByLetter(letter);
-    };
-    alphabetBox.appendChild(span);
-});
-
-// =============================
-// LIEN AVEC BOUTONS CATÉGORIES FIXES
-// =============================
-document.querySelectorAll(".category-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const cat = btn.dataset.category;
-        if (cat === "all") {
-            filteredDefinitions = [...definitions];
-        } else {
-            filteredDefinitions = definitions.filter(d => d.category === cat);
-        }
-        updateDisplay();
-    });
-});
-
-// =============================
-// FONCTION LOAD WORDS
-// =============================
-function loadWords(list, highlight = "") {
-    wordList.innerHTML = "";
-
-    if (list.length === 0) {
-        wordList.innerHTML = "<li>Aucun résultat</li>";
-        return;
-    }
-
-    list.forEach(def => {
+// Affiche les mots dans la liste
+function displayWords(words) {
+    wordListEl.innerHTML = "";
+    words.forEach(word => {
         const li = document.createElement("li");
-        li.onclick = () => openPopup(def);
-
-        // Surbrillance du texte recherché
-        if (highlight) {
-            const regex = new RegExp(`(${highlight})`, "gi");
-            li.innerHTML = def.word.replace(regex, "<span class='highlight'>$1</span>");
-        } else {
-            li.textContent = def.word;
-        }
-
-        wordList.appendChild(li);
+        li.textContent = word.name;
+        li.addEventListener("click", () => openPopup(word));
+        wordListEl.appendChild(li);
     });
 }
 
-// =============================
-// FILTRAGE
-// =============================
-function filterByLetter(letter) {
-    filteredDefinitions = definitions.filter(d =>
-        d.word.toUpperCase().startsWith(letter)
-    );
-    updateDisplay();
+// Ouvre le popup avec les détails du mot
+function openPopup(word) {
+    popupImgEl.src = word.img || "";
+    popupContentEl.querySelector("h3")?.remove();
+    popupContentEl.querySelector("p")?.remove();
+
+    const title = document.createElement("h3");
+    title.textContent = word.name;
+    const def = document.createElement("p");
+    def.textContent = word.definition;
+
+    popupContentEl.appendChild(title);
+    popupContentEl.appendChild(def);
+
+    popupEl.classList.remove("hidden");
 }
 
-function filterByCategory(category) {
-    filteredDefinitions = definitions.filter(d => d.category === category);
-    updateDisplay();
-}
-
-searchInput.addEventListener("input", () => {
-    const text = searchInput.value.toLowerCase();
-    filteredDefinitions = definitions.filter(d =>
-        d.word.toLowerCase().includes(text)
-    );
-    updateDisplay(text);
+// Ferme le popup
+closePopupEl.addEventListener("click", () => popupEl.classList.add("hidden"));
+popupEl.addEventListener("click", e => {
+    if (e.target === popupEl) popupEl.classList.add("hidden");
 });
 
-// =============================
-// MISE A JOUR AFFICHAGE
-// =============================
-function updateDisplay(highlight = "") {
-    loadWords(filteredDefinitions, highlight);
-    initBubbles(filteredDefinitions);
-}
-
-// =============================
-// POPUP
-// =============================
-function openPopup(def) {
-    const popup = document.getElementById("popup");
-    document.getElementById("popup-title").textContent = def.word;
-    document.getElementById("popup-text").textContent = def.definition;
-    const imgEl = document.getElementById("popup-img");
-
-    if (def.image) {
-        imgEl.src = def.image;
-        imgEl.style.display = "block";
-    } else {
-        imgEl.style.display = "none";
-    }
-
-    popup.classList.remove("hidden");
-}
-
-document.getElementById("closePopup").onclick = () => {
-    document.getElementById("popup").classList.add("hidden");
-};
-
-// =============================
-// CANVAS BUBBLES
-// =============================
-class Bubble {
-    constructor(def) {
-        this.def = def;
-        this.size = 80;
-        this.x = Math.random() * (canvas.width - this.size);
-        this.y = Math.random() * (canvas.height - this.size);
-        this.vx = (Math.random() - 0.5) * 0.8;
-        this.vy = (Math.random() - 0.5) * 0.8;
-    }
-
-    draw() {
-        ctx.fillStyle = "rgba(255,255,255,0.08)";
-        ctx.fillRect(this.x, this.y, this.size, this.size);
-
-        if (this.def.image) {
-            const img = new Image();
-            img.src = this.def.image;
-            ctx.drawImage(img, this.x + 15, this.y + 10, 50, 50);
-        }
-
-        ctx.fillStyle = "#fff";
-        ctx.font = "12px Arial";
-        ctx.fillText(this.def.word, this.x + 10, this.y + 75);
-    }
-
-    update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0 || this.x + this.size > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y + this.size > canvas.height) this.vy *= -1;
-    }
-
-    isClicked(mx, my) {
-        return mx > this.x && mx < this.x + this.size && my > this.y && my < this.y + this.size;
-    }
-}
-
-// =============================
-// INITIALISATION BULLES
-// =============================
-function initBubbles(list = filteredDefinitions) {
-    bubbles = list.map(def => new Bubble(def));
-}
-
-// =============================
-// ANIMATION
-// =============================
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    bubbles.forEach(b => {
-        b.update();
-        b.draw();
-    });
-    requestAnimationFrame(animate);
-}
-
-// =============================
-// CLIC SUR BUBBLES
-// =============================
-canvas.addEventListener("click", e => {
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
-
-    bubbles.forEach(b => {
-        if (b.isClicked(mx, my)) {
-            openPopup(b.def);
-        }
-    });
+// Filtrage par recherche
+searchEl.addEventListener("input", () => {
+    const query = searchEl.value.toLowerCase();
+    const filtered = wordsData.filter(word => word.name.toLowerCase().includes(query));
+    displayWords(filtered);
 });
 
-// =============================
-// LANCEMENT INITIAL
-// =============================
-updateDisplay();
-animate();
+// Filtrage par alphabet
+function createAlphabet() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    letters.forEach(letter => {
+        const span = document.createElement("span");
+        span.textContent = letter;
+        span.classList.add("alpha-btn");
+        span.addEventListener("click", () => {
+            document.querySelectorAll(".alpha-btn").forEach(btn => btn.classList.remove("active"));
+            span.classList.add("active");
+            const filtered = wordsData.filter(word => word.name.startsWith(letter));
+            displayWords(filtered);
+        });
+        alphabetEl.appendChild(span);
+    });
+}
+
+// Filtrage par catégorie
+function createCategories() {
+    const categories = [...new Set(wordsData.map(word => word.category))];
+    categories.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.textContent = cat;
+        btn.classList.add("category-btn");
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            const filtered = wordsData.filter(word => word.category === cat);
+            displayWords(filtered);
+        });
+        categoriesEl.appendChild(btn);
+    });
+}
+
+// Initialisation
+displayWords(wordsData);
+createAlphabet();
+createCategories();
