@@ -1,92 +1,117 @@
-// ============================
-// MAIN.JS
-// ============================
+// main.js
 
+// Sélection des éléments HTML
 const wordListEl = document.getElementById("wordList");
-const searchEl = document.getElementById("search");
+const searchInput = document.getElementById("search");
 const alphabetEl = document.getElementById("alphabet");
 const categoriesEl = document.getElementById("categories");
-const popupEl = document.getElementById("popup");
-const popupContentEl = document.getElementById("popup-content");
-const popupImgEl = document.getElementById("popup-img");
-const closePopupEl = document.getElementById("closePopup");
+const popup = document.getElementById("popup");
+const popupContent = document.getElementById("popup-content");
+const popupImg = document.getElementById("popup-img");
+const popupWord = document.getElementById("popup-word");
+const popupDefinition = document.getElementById("popup-definition");
+const closePopupBtn = document.getElementById("closePopup");
 
-// Affiche les mots dans la liste
-function displayWords(words) {
+// Variables pour filtrage
+let filteredDefinitions = [...definitions];
+let activeLetter = "";
+let activeCategory = "";
+
+// --- Affichage des mots ---
+function displayWords(list) {
     wordListEl.innerHTML = "";
-    words.forEach(word => {
+    if(list.length === 0){
+        wordListEl.innerHTML = "<li>Aucun mot trouvé</li>";
+        return;
+    }
+    list.forEach(item => {
         const li = document.createElement("li");
-        li.textContent = word.name;
-        li.addEventListener("click", () => openPopup(word));
+        li.textContent = item.word;
+        li.addEventListener("click", () => openPopup(item));
         wordListEl.appendChild(li);
     });
 }
 
-// Ouvre le popup avec les détails du mot
-function openPopup(word) {
-    popupImgEl.src = word.img || "";
-    popupContentEl.querySelector("h3")?.remove();
-    popupContentEl.querySelector("p")?.remove();
-
-    const title = document.createElement("h3");
-    title.textContent = word.name;
-    const def = document.createElement("p");
-    def.textContent = word.definition;
-
-    popupContentEl.appendChild(title);
-    popupContentEl.appendChild(def);
-
-    popupEl.classList.remove("hidden");
+// --- Popup ---
+function openPopup(item) {
+    popup.classList.remove("hidden");
+    popupImg.src = item.image;
+    popupWord.textContent = item.word;
+    popupDefinition.textContent = item.definition;
 }
 
-// Ferme le popup
-closePopupEl.addEventListener("click", () => popupEl.classList.add("hidden"));
-popupEl.addEventListener("click", e => {
-    if (e.target === popupEl) popupEl.classList.add("hidden");
+function closePopup() {
+    popup.classList.add("hidden");
+}
+
+closePopupBtn.addEventListener("click", closePopup);
+popup.addEventListener("click", (e) => {
+    if(e.target === popup) closePopup();
 });
 
-// Filtrage par recherche
-searchEl.addEventListener("input", () => {
-    const query = searchEl.value.toLowerCase();
-    const filtered = wordsData.filter(word => word.name.toLowerCase().includes(query));
-    displayWords(filtered);
+// --- Alphabet ---
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+alphabet.forEach(letter => {
+    const span = document.createElement("span");
+    span.textContent = letter;
+    span.classList.add("alpha-btn");
+    span.addEventListener("click", () => {
+        if(activeLetter === letter){
+            activeLetter = "";
+        } else {
+            activeLetter = letter;
+        }
+        updateActiveClasses();
+        filterWords();
+    });
+    alphabetEl.appendChild(span);
 });
 
-// Filtrage par alphabet
-function createAlphabet() {
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    letters.forEach(letter => {
-        const span = document.createElement("span");
-        span.textContent = letter;
-        span.classList.add("alpha-btn");
-        span.addEventListener("click", () => {
-            document.querySelectorAll(".alpha-btn").forEach(btn => btn.classList.remove("active"));
-            span.classList.add("active");
-            const filtered = wordsData.filter(word => word.name.startsWith(letter));
-            displayWords(filtered);
-        });
-        alphabetEl.appendChild(span);
+// --- Catégories ---
+const categoriesSet = new Set();
+definitions.forEach(item => {
+    item.category.split(",").forEach(cat => categoriesSet.add(cat.trim()));
+});
+
+Array.from(categoriesSet).sort().forEach(cat => {
+    const btn = document.createElement("button");
+    btn.textContent = cat;
+    btn.classList.add("category-btn");
+    btn.addEventListener("click", () => {
+        if(activeCategory === cat){
+            activeCategory = "";
+        } else {
+            activeCategory = cat;
+        }
+        updateActiveClasses();
+        filterWords();
+    });
+    categoriesEl.appendChild(btn);
+});
+
+// --- Mise à jour des classes actives ---
+function updateActiveClasses() {
+    document.querySelectorAll(".alpha-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.textContent === activeLetter);
+    });
+    document.querySelectorAll(".category-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.textContent === activeCategory);
     });
 }
 
-// Filtrage par catégorie
-function createCategories() {
-    const categories = [...new Set(wordsData.map(word => word.category))];
-    categories.forEach(cat => {
-        const btn = document.createElement("button");
-        btn.textContent = cat;
-        btn.classList.add("category-btn");
-        btn.addEventListener("click", () => {
-            document.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            const filtered = wordsData.filter(word => word.category === cat);
-            displayWords(filtered);
-        });
-        categoriesEl.appendChild(btn);
+// --- Recherche ---
+searchInput.addEventListener("input", filterWords);
+
+// --- Filtrage global ---
+function filterWords() {
+    filteredDefinitions = definitions.filter(item => {
+        const matchesSearch = item.word.toLowerCase().includes(searchInput.value.toLowerCase());
+        const matchesLetter = activeLetter ? item.word[0].toUpperCase() === activeLetter : true;
+        const matchesCategory = activeCategory ? item.category.split(",").map(c => c.trim()).includes(activeCategory) : true;
+        return matchesSearch && matchesLetter && matchesCategory;
     });
+    displayWords(filteredDefinitions);
 }
 
-// Initialisation
-displayWords(wordsData);
-createAlphabet();
-createCategories();
+// --- Initialisation ---
+displayWords(definitions);
