@@ -39,17 +39,18 @@ alphabet.forEach(letter => {
 });
 
 // =============================
-// GENERATION CATEGORIES
+// LIEN AVEC BOUTONS CATÉGORIES FIXES
 // =============================
-const categories = [...new Set(definitions.map(d => d.category))];
-categories.forEach(cat => {
-    const span = document.createElement("span");
-    span.textContent = cat;
-    span.classList.add("category-item");
-    span.onclick = () => {
-        filterByCategory(cat);
-    };
-    categoriesBox.appendChild(span);
+document.querySelectorAll(".category-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const cat = btn.dataset.category;
+        if (cat === "all") {
+            filteredDefinitions = [...definitions];
+        } else {
+            filteredDefinitions = definitions.filter(d => d.category === cat);
+        }
+        updateDisplay();
+    });
 });
 
 // =============================
